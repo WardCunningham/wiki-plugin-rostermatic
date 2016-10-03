@@ -7,8 +7,12 @@ expand = (text)->
     .replace /\*(.+?)\*/g, '<i>$1</i>'
 
 facts = (site) ->
-  months = ( (Date.now() - site.birth) / 1000 / 3600 / 24 / 365 ).toFixed(5)
-  """<span style="float:right">#{months}</span>"""
+  items = []
+  items.push ( (Date.now() - site.birth) / 1000 / 3600 / 24 / 31.5 ).toFixed(1) if site.birth
+  items.push 'owner' if site.owner
+  items.push 'persona' if site.persona
+  items.push 'openid' if site.openid
+  """<span style="float:right">#{items.reverse().join ', '}</span>"""
 
 report = (sites) ->
   result = []

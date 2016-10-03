@@ -17,6 +17,10 @@
   "scripts": {
     "test": "mocha"
   },
+  "dependencies": {
+    "async": "^2.0.1",
+    "jsonfile": "^2.4.0"
+  },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-coffee": "^1.0.0",
@@ -36,8 +40,5 @@
   },
   "engines": {
     "node": ">=0.10"
-  },
-  "dependencies": {
-    "async": "^2.0.1"
   }
 }
