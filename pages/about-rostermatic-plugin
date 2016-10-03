@@ -1,0 +1,37 @@
+{
+  "title": "About Rostermatic Plugin",
+  "story": [
+  {
+    "type": "paragraph",
+    "id": "a5a4b624173c9f19",
+    "text": "Here we describe the purpose of the plugin and include a sample."
+  },
+  {
+    "type": "rostermatic",
+    "id": "745e0de7a4496731",
+    "text": "This is text in the new plugin. You can *double-click* to edit it too."
+  }
+],
+  "journal": [
+  {
+    "type": "create",
+    "item": {
+      "title": "About Rostermatic Plugin",
+      "story": [
+  {
+    "type": "paragraph",
+    "id": "a5a4b624173c9f19",
+    "text": "Here we describe the purpose of the plugin and include a sample."
+  },
+  {
+    "type": "rostermatic",
+    "id": "745e0de7a4496731",
+    "text": "This is text in the new plugin. You can *double-click* to edit it too."
+  }
+]
+    },
+    "date": 1475457487000,
+    "certificate": "from mkplugin.sh"
+  }
+]
+}
