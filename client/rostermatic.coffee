@@ -18,6 +18,13 @@ facts = (site, index) ->
   details = (word) -> "<span class=details>#{word}</span>"
   """<span style="float:right" data-index=#{index}>#{items.reverse().map(details).join ', '}</span>"""
 
+short = (domain) ->
+  s = domain.split '.'
+  if s.length > 1
+    "#{s[0]}.#{s[1]}"
+  else
+    s[0]
+
 report = (sites) ->
   result = []
   for site, index in sites
@@ -34,7 +41,7 @@ report = (sites) ->
             title=#{d}
             data-site=#{d}
             data-slug=welcome-visitors>
-          <td class=domain>#{d}
+          <td class=domain title="#{d}">#{short d}
           <td #{p}> #{facts site, index}
           <td #{p}> #{site.pages}
           <td #{p}> #{( (Date.now() - site.birth) / 1000 / 3600 / 24 / 31.5 ).toFixed(0) if site.birth}
