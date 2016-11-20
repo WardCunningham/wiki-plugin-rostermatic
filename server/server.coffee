@@ -34,16 +34,21 @@ startServer = (params) ->
     async.series [birth,pages,owner,persona,openid], (err) ->
       done null, site
 
-  authorizedAsAdmin = (req, res, next) ->
+  farm = (req, res, next) ->
+    if argv.f
+      next()
+    else
+      res.status(404).send {error: 'service requires farm mode'}
+
+  admin = (req, res, next) ->
     if app.securityhandler.isAdmin(req)
       next()
     else
       admin = "none specified" unless argv.admin
       user = "not logged in" unless req.session?.passport?.user || req.session?.email || req.session?.friend
-      user ||= 'not admin user'
-      res.status(403).send {admin, user}
+      res.status(403).send {error: 'service requires admin user', admin, user}
 
-  app.get route('sites'), authorizedAsAdmin, (req, res) ->
+  app.get route('sites'), farm, admin, (req, res) ->
     fs.readdir path(''), (err, files) ->
       sites = async.map files||[], info, (err, sites) ->
         res.json {sites}

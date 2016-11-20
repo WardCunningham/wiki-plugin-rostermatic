@@ -42,17 +42,23 @@ report = (sites) ->
             data-site=#{d}
             data-slug=welcome-visitors>
           <td class=domain title="#{d}">#{short d}
-          <td #{p}> #{facts site, index}
-          <td #{p}> #{site.pages}
-          <td #{p}> #{( (Date.now() - site.birth) / 1000 / 3600 / 24 / 31.5 ).toFixed(0) if site.birth}
+          <td #{p} title=claims> #{facts site, index}
+          <td #{p} title=pages> #{site.pages}
+          <td #{p} title="months"> #{( (Date.now() - site.birth) / 1000 / 3600 / 24 / 31.5 ).toFixed(0) if site.birth}
       """
   "<table>#{result.join "\n"}</table>"
 
 bright = (e) -> $(e.currentTarget).css 'background-color', '#f8f8f8'
 normal = (e) -> $(e.currentTarget).css 'background-color', '#eee'
+
 emit = ($item, item) ->
-  $item.append """<p style="background-color:#eee;padding:15px;">must login as server admin</p>"""
-  $.getJSON '/plugin/rostermatic/sites', (data) ->
+  $item.append """
+    <p style="background-color:#eee;padding:15px;">
+      loading site details
+    </p>
+  """
+
+  render = (data) ->
     $item.find('p').html report data.sites
     $item.find('.row').hover bright, normal
     $item.find('p .details').click (e) ->
@@ -64,6 +70,17 @@ emit = ($item, item) ->
         when 'oid' then site.openid
         else site.owner[provider]
       wiki.dialog "#{site.file} #{provider}", "#{JSON.stringify detail,null,'  '}"
+
+  trouble = (xhr) -> 
+    $item.find('p').html xhr.responseJSON?.error || 'server error'
+
+  $.ajax
+    url: '/plugin/rostermatic/sites'
+    dataType: 'json'
+    success: render
+    error: trouble
+
+
 
 bind = ($item, item) ->
   $item.dblclick -> wiki.textEditor $item, item
