@@ -19,6 +19,9 @@ startServer = (params) ->
     birth = (cb) ->
       fs.stat path("#{file}/status/favicon.png"), (err, stat) ->
         site.birth = stat?.birthtime?.getTime(); cb()
+    pages = (cb) ->
+      fs.readdir path("#{file}/pages"), (err, pages) ->
+        site.pages = pages?.length; cb()
     owner = (cb) ->
       jsonfile.readFile path("#{file}/status/owner.json"), {throws:false}, (err, owner) ->
         site.owner = owner; cb()
@@ -28,10 +31,19 @@ startServer = (params) ->
     openid = (cb) ->
       fs.readFile path("#{file}/status/open_id.identity"),'utf8', (err, identity) ->
         site.openid = identity; cb()
-    async.series [birth,owner,persona,openid], (err) ->
+    async.series [birth,pages,owner,persona,openid], (err) ->
       done null, site
 
-  app.get route('sites'), (req, res) ->
+  authorizedAsAdmin = (req, res, next) ->
+    if app.securityhandler.isAdmin(req)
+      next()
+    else
+      admin = "none specified" unless argv.admin
+      user = "not logged in" unless req.session?.passport?.user || req.session?.email || req.session?.friend
+      user ||= 'not admin user'
+      res.status(403).send {admin, user}
+
+  app.get route('sites'), authorizedAsAdmin, (req, res) ->
     fs.readdir path(''), (err, files) ->
       sites = async.map files||[], info, (err, sites) ->
         res.json {sites}
