@@ -69,7 +69,7 @@ emit = ($item, item) ->
         when 'moz' then site.persona
         when 'oid' then site.openid
         else site.owner[provider]
-      wiki.dialog "#{site.file} #{provider}", "#{JSON.stringify detail,null,'  '}"
+      wiki.dialog "#{site.file} #{provider}", "<pre>#{expand JSON.stringify detail, null, '  '}</pre>"
 
   trouble = (xhr) -> 
     $item.find('p').html xhr.responseJSON?.error || 'server error'
