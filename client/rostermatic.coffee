@@ -40,11 +40,11 @@ report = (sites) ->
           <td #{p}> #{( (Date.now() - site.birth) / 1000 / 3600 / 24 / 31.5 ).toFixed(0) if site.birth}
       """
   "<table>#{result.join "\n"}</table>"
-  
+
 bright = (e) -> $(e.currentTarget).css 'background-color', '#f8f8f8'
 normal = (e) -> $(e.currentTarget).css 'background-color', '#eee'
 emit = ($item, item) ->
-  $item.append """<p style="background-color:#eee;padding:15px;">"""
+  $item.append """<p style="background-color:#eee;padding:15px;">must login as server admin</p>"""
   $.getJSON '/plugin/rostermatic/sites', (data) ->
     $item.find('p').html report data.sites
     $item.find('.row').hover bright, normal
