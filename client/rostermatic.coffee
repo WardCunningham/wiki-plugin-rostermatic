@@ -48,6 +48,23 @@ report = (sites) ->
       """
   "<table>#{result.join "\n"}</table>"
 
+features = ($item, data) ->
+  $item.prepend "<button>persona upgrade</button>"
+  $item.find('button').click ->
+    sites = {}
+    for site in data.sites
+      if site.pages && site.owner && site.owner.persona
+        continue if site.owner.google || site.owner.twitter || site.owner.github || site.owner.friend
+        sites[site.owner.persona.email] ||= []
+        sites[site.owner.persona.email].push site.file
+    a = (text) -> "<a href=//#{text} target=_blank>#{text}</a>"
+    wiki.dialog 'persona conversion notices', """
+      #{Object.keys(sites).join ','}<hr>
+      #{("#{key} => #{value.map(a).join ', '}<br>" for key, value of sites)}<hr>
+      #{JSON.stringify(data)}
+    """
+
+
 bright = (e) -> $(e.currentTarget).css 'background-color', '#f8f8f8'
 normal = (e) -> $(e.currentTarget).css 'background-color', '#eee'
 
@@ -70,6 +87,7 @@ emit = ($item, item) ->
         when 'oid' then site.openid
         else site.owner[provider]
       wiki.dialog "#{site.file} #{provider}", "<pre>#{expand JSON.stringify detail, null, '  '}</pre>"
+    features $item, data
 
   trouble = (xhr) -> 
     $item.find('p').html xhr.responseJSON?.error || 'server error'
