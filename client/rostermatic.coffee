@@ -60,8 +60,7 @@ features = ($item, data) ->
     a = (text) -> "<a href=//#{text} target=_blank>#{text}</a>"
     wiki.dialog 'persona conversion notices', """
       #{Object.keys(sites).join ','}<hr>
-      #{("#{key} => #{value.map(a).join ', '}<br>" for key, value of sites)}<hr>
-      #{JSON.stringify(data)}
+      #{("#{key} => #{value.map(a).join ', '}<hr>" for key, value of sites)}
     """
 
 
