@@ -58,10 +58,10 @@ features = ($item, data) ->
         sites[site.owner.persona.email] ||= []
         sites[site.owner.persona.email].push site.file
     a = (text) -> "<a href=//#{text} target=_blank>#{text}</a>"
-    m = (email, sites) -> "#{key} => <br>#{value.map(a).join '<br>'}"
+    m = (email, sites) -> "#{email} => <br>#{sites.map(a).join '<br>'}"
     wiki.dialog 'persona conversion notices', """
       #{Object.keys(sites).join ','}<hr>
-      #{("#{m key, value}<hr>" for key, value of sites)}
+      #{("#{m key, value}" for key, value of sites).join('<hr>')}
     """
 
 
