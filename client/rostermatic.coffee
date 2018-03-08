@@ -20,10 +20,11 @@ facts = (site, index) ->
 
 short = (domain) ->
   s = domain.split '.'
-  if s.length > 1
+  s = if s.length > 1
     "#{s[0]}.#{s[1]}"
   else
     s[0]
+  s.substr(0,35)
 
 report = (sites) ->
   result = []
@@ -49,7 +50,7 @@ report = (sites) ->
   "<table>#{result.join "\n"}</table>"
 
 features = ($item, data) ->
-  $item.prepend "<button>persona upgrade</button>"
+  # $item.prepend "<button>persona upgrade</button>"
   $item.find('button').click ->
     sites = {}
     for site in data.sites
